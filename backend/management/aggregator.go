@@ -1,4 +1,4 @@
-package main
+package management
 
 import (
 	"errors"
@@ -47,6 +47,10 @@ func (c *PuchasesAggregator) ForCardId(cardId int) (ClientPurchases, error) {
 	}
 
 	return ClientPurchases{}, errors.New("Cliente não encontrado")
+}
+
+func (c *PuchasesAggregator) ToJson() map[string]ClientPurchases {
+	return c.clients
 }
 
 func (p *ClientPurchases) addPurchase(item PurchaseItem) *ClientPurchases {

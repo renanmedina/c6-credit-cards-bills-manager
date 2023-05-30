@@ -1,0 +1,4 @@
+*.csv
+.Identifier
+web/temp/uploads/*
+!web/temp/uploads/.keep
