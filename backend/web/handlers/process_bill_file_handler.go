@@ -11,7 +11,7 @@ import (
 
 func ProcessBillFileHandler(c *gin.Context) {
 	receivedFile, _ := c.FormFile("bill_file")
-	savedFilePath := uploadsDisk(receivedFile)
+	savedFilePath := uploadsDisk(receivedFile.Filename)
 
 	c.SaveUploadedFile(receivedFile, savedFilePath)
 
