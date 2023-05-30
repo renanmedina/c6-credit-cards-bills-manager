@@ -10,11 +10,10 @@ import (
 )
 
 func ProcessBillFileHandler(c *gin.Context) {
-	savedFilePath := c.Query("filename")
-	// receivedFile, _ := c.FormFile("bill_file")
-	// savedFilePath := uploadsDisk(receivedFile)
+	receivedFile, _ := c.FormFile("bill_file")
+	savedFilePath := uploadsDisk(receivedFile)
 
-	// c.SaveUploadedFile(receivedFile, savedFilePath)
+	c.SaveUploadedFile(receivedFile, savedFilePath)
 
 	purchases := management.ReadPurchasesFile(savedFilePath)
 	groupedPurchases := management.AggregatePurchases(purchases)
