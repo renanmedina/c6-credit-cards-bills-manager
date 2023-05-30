@@ -67,7 +67,7 @@ export default function Home() {
     return filteredItems.map((purchase : any) => {
       const amountFormatted = Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(purchase.Amount);
       return (
-        <tr>
+        <tr key={`${purchase.Description}-${purchase.Date}`}>
           <td className='border border-slate-300 dark:border-slate-700 p-2 text-slate-500 dark:text-slate-400'>{ purchase.Date }</td>
           <td className='border border-slate-300 dark:border-slate-700 p-2 text-slate-500 dark:text-slate-400'>{ purchase.ClientName }</td>
           <td className='border border-slate-300 dark:border-slate-700 p-2 text-slate-500 dark:text-slate-400'>{ purchase.Description }</td>
@@ -101,7 +101,7 @@ export default function Home() {
               (<div className="mb-6">
                 <select className="bg-gray-800 py-2 px-1 rounded" onChange={filterPurchases}>
                   <option value="" selected>Todos os clientes</option>
-                  {clientNames.map((clientName) => <option value={clientName}>{clientName}</option>)}
+                  {clientNames.map((clientName) => <option key={clientName} value={clientName}>{clientName}</option>)}
                 </select>
               </div>
               )
