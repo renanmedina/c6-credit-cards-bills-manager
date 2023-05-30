@@ -78,6 +78,12 @@ export default function Home() {
     });
   }
 
+  const clientsOptions = () => {
+    return clientNames.map((clientName) => 
+      <option key={clientName} value={clientName}>{clientName}</option>
+    );
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-slate-950 w-600">
       <div className="align-items-center">
@@ -101,7 +107,7 @@ export default function Home() {
               (<div className="mb-6">
                 <select className="bg-gray-800 py-2 px-1 rounded" onChange={filterPurchases}>
                   <option value="" selected>Todos os clientes</option>
-                  {clientNames.map((clientName) => <option key={clientName} value={clientName}>{clientName}</option>)}
+                  { clientsOptions() }
                 </select>
               </div>
               )
