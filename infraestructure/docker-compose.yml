@@ -1,0 +1,11 @@
+version: 3
+services: 
+  database-service:
+    image: mysql:latest
+    container_name: c6-credit-cards-bills-manager-database
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
