@@ -8,6 +8,7 @@ export default function Home() {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [purchasesData, setPurchasesData] = useState<Array<any>>([]);
+  const [filteredItems, setFilteredItems] = useState<Array<any>>([]);
   const [clientNames, setClientNames] = useState<Array<string>>([]);
   const [selectedClient, setSelectedClient] = useState("");
 
@@ -24,6 +25,7 @@ export default function Home() {
         const formData = new FormData(form as HTMLFormElement);
         const processedData = await processor.process(formData);
         setPurchasesData(processedData.purchases);
+        setFilteredItems(processedData.purchases);
         setClientNames(processedData.clientNames);
       } catch (errProcessing) {
         alert(errProcessing);
@@ -34,8 +36,20 @@ export default function Home() {
   };
 
   const filterPurchases = (event: any) => {
-    const selectedClient = event.target.value;
+    const clientName = event.target.value;
+    let purchasesItems = purchasesData;
+    if (clientName != "") {
+      purchasesItems = purchasesData.filter((item) => item.ClientName == clientName);
+    }
+
+    setFilteredItems(purchasesItems);
     setSelectedClient(selectedClient);
+  }
+
+  const totalDue = () => {
+    const totalAmount = filteredItems.reduce((accumulator, purchase) => accumulator + purchase.Amount, 0);
+    console.log(totalAmount);
+    return Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(totalAmount);
   }
 
   const renderItems = () => {
@@ -51,7 +65,7 @@ export default function Home() {
       );
     }
 
-    if (!purchasesData.length) {
+    if (!filteredItems.length) {
       return (
         <tr>
           <td colSpan={5} className='text-center border border-slate-300 dark:border-slate-700 p-2 text-slate-500 dark:text-slate-400'>Nenhuma compra encontrada</td>
@@ -59,13 +73,9 @@ export default function Home() {
       );
     }
 
-    let filteredItems = purchasesData;
-    if (selectedClient != "") {
-      filteredItems = purchasesData.filter((item) => item.ClientName == selectedClient);
-    }
-
     return filteredItems.map((purchase : any) => {
       const amountFormatted = Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(purchase.Amount);
+
       return (
         <tr key={`${purchase.Description}-${purchase.Date}`}>
           <td className='border border-slate-300 dark:border-slate-700 p-2 text-slate-500 dark:text-slate-400'>{ purchase.Date }</td>
@@ -126,6 +136,14 @@ export default function Home() {
             </thead>
             <tbody>
               { renderItems() }
+
+              <tr>
+                <td colSpan={5} align='right'>
+                  <div className="mt-3">
+                    Total: { totalDue() }
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div> 
